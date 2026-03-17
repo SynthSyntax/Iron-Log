@@ -86,6 +86,20 @@ export async function addExercise(exercise) {
   return id;
 }
 
+export async function updateExercise(exercise) {
+  const db = await openDB();
+  const tx = db.transaction('exercises', 'readwrite');
+  const store = tx.objectStore('exercises');
+  await promisify(store.put(exercise));
+}
+
+export async function deleteExercise(id) {
+  const db = await openDB();
+  const tx = db.transaction('exercises', 'readwrite');
+  const store = tx.objectStore('exercises');
+  await promisify(store.delete(Number(id)));
+}
+
 // ── Workouts ───────────────────────────────
 
 export async function saveWorkout(workout) {

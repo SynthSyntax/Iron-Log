@@ -1,4 +1,4 @@
-import { getAllExercises, getExerciseHistory, getExercisePRs } from '../db.js';
+import { getAllExercises, getExerciseHistory, getExercisePRs, deleteExercise, updateExercise } from '../db.js';
 import { EXERCISE_CATEGORIES } from '../exercises-seed.js';
 import { formatDate, formatWeight, debounce, escapeHtml } from '../utils.js';
 
@@ -112,9 +112,15 @@ export async function renderExercises(container) {
           <div class="modal-handle"></div>
           <div class="modal-header">
             <h2>${escapeHtml(exercise.name)}</h2>
-            <button class="btn btn-ghost btn-sm" id="exercise-detail-close">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
+            <div style="display:flex; gap: 4px;">
+              ${exercise.isCustom ? `
+                <button class="btn btn-ghost btn-sm" id="exercise-detail-edit" style="color: var(--accent);">Edit</button>
+                <button class="btn btn-ghost btn-sm" id="exercise-detail-delete" style="color: var(--red);">Delete</button>
+              ` : ''}
+              <button class="btn btn-ghost btn-sm" id="exercise-detail-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
           </div>
           <div class="modal-body">
             <div class="badge ${exercise.isCustom ? 'badge-orange' : 'badge-accent'}" style="margin-bottom: var(--gap-lg);">
@@ -171,6 +177,33 @@ export async function renderExercises(container) {
         setTimeout(() => modalContainer.innerHTML = '', 300);
       }
     });
+
+    if (exercise.isCustom) {
+      document.getElementById('exercise-detail-edit').addEventListener('click', async () => {
+        const newName = window.prompt("Edit exercise name:", exercise.name);
+        if (newName && newName.trim() !== "" && newName.trim() !== exercise.name) {
+          exercise.name = newName.trim();
+          await updateExercise(exercise);
+          document.querySelector('.modal-header h2').textContent = exercise.name;
+          const idx = exercises.findIndex(e => e.id === exercise.id);
+          if (idx !== -1) exercises[idx] = exercise;
+          render();
+        }
+      });
+      
+      document.getElementById('exercise-detail-delete').addEventListener('click', async () => {
+        if (window.confirm(`Are you sure you want to delete "${exercise.name}"?`)) {
+          await deleteExercise(exercise.id);
+          const backdrop = document.getElementById('exercise-detail-backdrop');
+          backdrop.classList.remove('active');
+          setTimeout(() => modalContainer.innerHTML = '', 300);
+          
+          const idx = exercises.findIndex(e => e.id === exercise.id);
+          if (idx !== -1) exercises.splice(idx, 1);
+          render();
+        }
+      });
+    }
   }
 
   render();
