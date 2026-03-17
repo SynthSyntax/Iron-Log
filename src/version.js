@@ -1,4 +1,4 @@
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.0.1';
 
 // Change these to your actual GitHub username and repository name!
 const GITHUB_USERNAME = 'SynthSyntax';

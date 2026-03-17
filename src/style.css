@@ -145,20 +145,29 @@ a {
   -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
-  justify-content: space-around;
   z-index: 100;
   border-top: 1px solid var(--border);
 }
 
 .nav-item {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 8px 16px;
+  padding: 8px 0;
   color: var(--text-3);
   transition: color 0.2s var(--ease);
   position: relative;
+}
+
+.nav-fab-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100%;
 }
 
 .nav-item span {
@@ -206,7 +215,7 @@ a {
 /* ── View Containers ────────────────────────── */
 .view {
   padding: var(--gap-lg);
-  padding-top: var(--gap-xl);
+  padding-top: calc(env(safe-area-inset-top, 24px) + var(--gap-xl));
 }
 
 .view-header {
@@ -356,6 +365,8 @@ a {
   border-radius: var(--radius-sm);
   color: var(--text);
   -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  appearance: textfield;
   transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
 
@@ -615,6 +626,7 @@ a {
   align-items: center;
   justify-content: space-between;
   padding: var(--gap-lg);
+  padding-top: calc(env(safe-area-inset-top, 24px) + var(--gap-lg));
   position: sticky;
   top: 0;
   background: var(--bg);
