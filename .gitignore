@@ -1,0 +1,12 @@
+node_modules/
+android-sdk/
+jdk-17.0.2/
+jdk-21.0.2/
+*.tar.gz
+*.zip
+android/app/build/
+android/.gradle/
+android/local.properties
+IronLog.apk
+www/
+.DS_Store
