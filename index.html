@@ -55,40 +55,6 @@
   <!-- Modals container -->
   <div id="modal-container"></div>
 
-  <!-- Rest Timer Overlay -->
-  <div id="rest-timer-overlay" class="hidden">
-    <div class="rest-timer-content">
-      <div class="rest-timer-ring">
-        <svg viewBox="0 0 120 120">
-          <circle cx="60" cy="60" r="54" fill="none" stroke="var(--surface-2)" stroke-width="6"/>
-          <circle id="timer-progress" cx="60" cy="60" r="54" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="339.29" stroke-dashoffset="0"/>
-        </svg>
-        <div class="rest-timer-display">
-          <span id="timer-value">1:30</span>
-          <span class="timer-label">Rest</span>
-        </div>
-      </div>
-      <div class="rest-timer-controls">
-        <button class="timer-btn" id="timer-minus">−15s</button>
-        <button class="timer-btn timer-skip" id="timer-skip">Skip</button>
-        <button class="timer-btn" id="timer-plus">+15s</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Install Banner -->
-  <div id="install-banner" class="install-banner hidden">
-    <div class="install-banner-content">
-      <img src="icons/icon-192.png" alt="Iron Log" width="40" height="40" style="border-radius: 10px;">
-      <div class="install-banner-text">
-        <strong>Install Iron Log</strong>
-        <span>Add to your home screen for quick access</span>
-      </div>
-      <button class="btn btn-primary btn-sm" id="install-btn">Install</button>
-      <button class="btn btn-ghost btn-sm" id="install-dismiss" style="padding: 6px;">✕</button>
-    </div>
-  </div>
-
   <script type="module" src="src/main.js"></script>
 
   <script>
@@ -100,37 +66,6 @@
           .catch((err) => console.log('SW registration failed:', err));
       });
     }
-
-    // Install Prompt (A2HS)
-    let deferredPrompt = null;
-    const installBanner = document.getElementById('install-banner');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-
-      // Show banner after short delay
-      setTimeout(() => {
-        if (installBanner) installBanner.classList.remove('hidden');
-      }, 3000);
-    });
-
-    document.getElementById('install-btn')?.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      if (installBanner) installBanner.classList.add('hidden');
-    });
-
-    document.getElementById('install-dismiss')?.addEventListener('click', () => {
-      if (installBanner) installBanner.classList.add('hidden');
-    });
-
-    window.addEventListener('appinstalled', () => {
-      if (installBanner) installBanner.classList.add('hidden');
-      deferredPrompt = null;
-    });
   </script>
 </body>
 </html>
