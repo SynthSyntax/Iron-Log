@@ -1124,10 +1124,10 @@ a {
 /* ── Install Banner (PWA) ───────────────── */
 .install-banner {
   position: fixed;
-  bottom: calc(var(--nav-height) + var(--safe-bottom) + 8px);
+  bottom: calc(var(--nav-height) + var(--safe-bottom) + 24px);
   left: 50%;
   transform: translateX(-50%);
-  z-index: 150;
+  z-index: 200; /* Increased to sit above the nav bar (z-index 100) */
   width: calc(100% - 32px);
   max-width: 480px;
   animation: fadeInUp 0.4s var(--ease) both;
